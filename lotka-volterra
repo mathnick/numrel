@@ -1,0 +1,52 @@
+import numpy as np
+from matplotlib import pyplot as plt
+
+def f(x,y):
+    return x*(a-b*y)
+def g(x,y):
+    return y*(-c+d*x)
+
+def euler(f,g,y0,x0,t0,h,n):
+    #f-crescimento da população de coelhos, g-crescimento da população de lobos
+    x=[x0]
+    y=[y0]
+    t=[t0]
+    #É necessário ter x,y e t como uma lista de números para conseguir gerar o gráfico
+
+    for k in range(n):
+        yk = y0 + h*f(y0,x0)
+        xk = x0 + h*g(x0,y0)
+        tk = t0 + h
+        y0 = yk
+        x0 = xk
+        t0 = tk
+        #Dessa forma o termo k se torna o termo zero para expressão seguinte
+        print(xk,yk,tk)
+        #Descobrir como transformar esses dados que aparecem em um arquivo do tipo txt
+        x.append(xk)
+        y.append(yk)
+        t.append(tk)
+        #Dessa forma sempre será acrescido a lista o k-esimo termo enonctrado
+    return x,y,t
+
+
+x0=1
+y0=1
+h=0.01
+n=2000
+t0=0
+a=1
+b=1
+c=1
+d=2
+
+x,y,t = euler(f,g,y0,x0,t0,h,n)
+plt.plot(t,x)
+plt.show()
+plt.plot(t,y)
+plt.show()
+plt.plot(x,y)
+plt.show()
+
+#Discutir os gráficos encontrados,entender como passar os dados para um arquivo do tipo txt, corrigir o que for necessário e por último passar pro latex
+
