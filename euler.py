@@ -1,24 +1,46 @@
 import numpy as np
+from matplotlib import pyplot as plt
 
-#exemplo para y'= 3 - y/x
+def f(t,x,y):
+    return x*(a-b*y)
+def g(t,x,y):
+    return y*(-c+d*x)
 
-def euler(f,x0,y0,h,n):
+def euler(f, g, x0, y0, t0, h, n):
+    #f-população de coelhos, g-população de lobos
+    x = np.zeros(n)
+    y = np.zeros(n)
+    t = np.zeros(n)
+    x[0] = x0
+    y[0] = y0
+    t[0] = t0
 
-    for k in range(n):
-        yk = y0 + h*f(x0,y0)
-        xk = x0 + h
-        print(yk,xk)
-        y0=yk
-        x0=xk
+    for k in range(n-1):
+        x[k+1] = x[k] + h*f(t, x[k], y[k])
+        y[k+1] = y[k] + h*g(t, x[k], y[k])
+        t[k+1] = t[k] + h
+
+    return x,y,t
 
 
+x0=1
+y0=1
+t0=0
+h=0.01
+n=2000
+a=1
+b=1
+c=1
+d=2
 
-def f(x,y):
-    return 3-x/y
-x0=2
-y0=2
-h=0.1
-n=10
+x, y, t = euler(f, g, x0, y0, t0, h, n)
 
-euler(f,x0,y0,h,n)
+plt.figure()
+plt.plot(t,x)
+plt.plot(t,y)
+
+plt.figure()
+plt.plot(x,y)
+
+plt.show()
 
