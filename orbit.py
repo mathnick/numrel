@@ -65,17 +65,17 @@ y0_ = 0
 vx0_ = 0
 vy0_ = 500
 t0_ = 0
-h_ = 0.01
-n_ = 20
+h_ = 5000
+n_ = 200000
 G = 6.67*(10**(-11))
 M = 1.99*(10**30)
 
 
 x, y, vx, vy, t = RK4(f_, g_, i_, j_, x0_, y0_, vx0_, vy0_, t0_, h_, n_)
 
-# plt.figure()
-# plt.plot(t,x)
-# plt.title('x vs t')
+plt.figure()
+plt.plot(t,x)
+plt.title('x vs t')
 
 plt.figure()
 plt.plot(x,y)
