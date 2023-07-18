@@ -14,13 +14,13 @@ theta = (np.pi / 180) * 80
 v0 = 90
 tR = 2*v0*np.sin(theta)/g
 h = 0.01
-
+dt = h * tR
 
 for t in range (100) :
       obj = bpy.context.object
-      obj.location[0] = x(t*h*tR, v0, theta)
+      obj.location[0] = x(t*dt, v0, theta)
       obj.keyframe_insert(data_path="location", frame=t, index=0)
-      obj.location[2] = z(t*h*tR, v0, theta, g)
+      obj.location[2] = z(t*dt, v0, theta, g)
       obj.keyframe_insert(data_path="location", frame=t, index=2)
 
 # import bpy
