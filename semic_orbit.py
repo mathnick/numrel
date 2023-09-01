@@ -61,7 +61,7 @@ def RK4(f, g, i, j, x0, y0, vx0, vy0, t0, h, n):
         obj = bpy.context.object
         obj.location[0] = x[k+1]
         obj.keyframe_insert(data_path="location", frame=k, index=0)
-        obj.location[2] = y[k=1]
+        obj.location[2] = y[k+1]
         obj.keyframe_insert(data_path="location", frame=k, index=1)
         
     return x, y, vx, vy, t
