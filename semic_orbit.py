@@ -1,7 +1,7 @@
 import numpy as np
 import bpy
 
-bpy.ops.mesh.primitive_uv_sphere_add(radius=0.5, location=(0.0, 0.0, 0.0))
+bpy.ops.mesh.primitive_uv_sphere_add(radius=2.0, location=(100, 0.0, 0.0))
 
 def f_(t, x, y, vx, vy):
     res = vx
@@ -61,21 +61,23 @@ def RK4(f, g, i, j, x0, y0, vx0, vy0, t0, h, n):
         obj = bpy.context.object
         obj.location[0] = x[k+1]
         obj.keyframe_insert(data_path="location", frame=k, index=0)
-        obj.location[2] = y[k+1]
+        obj.location[1] = y[k+1]
         obj.keyframe_insert(data_path="location", frame=k, index=1)
         
     return x, y, vx, vy, t
 
 
-x0_ = 4*10**(12)
+x0_ = 100
 y0_ = 0
 vx0_ = 0
-vy0_ = 500
+vy0_ = 3.6
 t0_ = 0
-h_ = 5000
-n_ = 200000
+h_ = 0.1
+n_ = 500
 G = 6.67*(10**(-11))
-M = 1.99*(10**30)
+M = 1.4*(10**14)
 
 
 x, y, vx, vy, t = RK4(f_, g_, i_, j_, x0_, y0_, vx0_, vy0_, t0_, h_, n_)
+
+bpy.ops.mesh.primitive_uv_sphere_add(radius=5.0, location=(0.0, 0.0, 0.0))
