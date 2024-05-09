@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 
 h = 0.1
-n = 15
+n = 16
 G = 6.67e-11
 
 def dados_in(n, r):
@@ -41,9 +41,9 @@ def kernel(r, h):
 def densidade(x, y, z, M, h):
     n = len(x)
     densidades = np.zeros(n)
-    distancias = distancia(x, y, z)  # Calcula as distâncias entre as partículas
+    distancias = distancia(x, y, z) 
     for i in range(n):
-        W = kernel(distancias[0][:, i], h)  # Correção aqui
+        W = kernel(distancias[0][:, i], h) 
         densidades[i] = np.sum(M * W)
     return densidades
 
@@ -99,19 +99,19 @@ ax = fig.add_subplot(111, projection='3d')
 ax.set_xlim(-2, 2)
 ax.set_ylim(-2, 2)
 ax.set_zlim(-2, 2)
-particles, = ax.plot([], [], [], 'bo', ms=8)
+particulas, = ax.plot([], [], [], 'bo', ms=8)
 
 def init():
-    particles.set_data([], [])
-    particles.set_3d_properties([])
-    return particles,
+    particulas.set_data([], [])
+    particulas.set_3d_properties([])
+    return particulas,
 
 def update(frame):
     global x, y, z, vx, vy, vz
     x, y, z, vx, vy, vz = atualizar(x, y, z, vx, vy, vz, M, h, dt)
-    particles.set_data(x, y)
-    particles.set_3d_properties(z)
-    return particles,
+    particulas.set_data(x, y)
+    particulas.set_3d_properties(z)
+    return particulas,
 
 ani = FuncAnimation(fig, update, frames=num_frames, init_func=init, blit=True)
 
