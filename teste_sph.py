@@ -1,26 +1,27 @@
-h = 0.1
-n = 100
+import numpy as np
+from matplotlib import pyplot as plt
+from matplotlib.animation import FuncAnimation
+from mpl_toolkits.mplot3d import Axes3D
+
+h = 1
+n = 16
 G = 6.67e-11
-k = 0.1  
+k = 0.1
+u = 2
 
 
 def dados_in(n, r):
-    theta = np.random.uniform(0, 2 * np.pi, n)
-    phi = np.random.uniform(0, np.pi, n)
-    radius = np.random.uniform(0, r, n)
-
-    x_0 = radius * np.sin(phi) * np.cos(theta)
-    y_0 = radius * np.sin(phi) * np.sin(theta)
-    z_0 = radius * np.cos(phi)
-
+    theta = np.linspace(0, 2 * np.pi, n, endpoint=False)
+    x_0 = r * np.cos(theta)
+    y_0 = r * np.sin(theta)
+    z_0 = np.zeros(n)
     vx_0 = np.zeros(n)
     vy_0 = np.zeros(n)
     vz_0 = np.zeros(n)
-    M = np.ones(n) * (0.005)
+    M = np.ones(n) * 10
     return x_0, y_0, z_0, vx_0, vy_0, vz_0, M
 
-
-x_0, y_0, z_0, vx_0, vy_0, vz_0, M = dados_in(n, r=0.75)
+x_0, y_0, z_0, vx_0, vy_0, vz_0, M = dados_in(n, r=1.0)
 
 x = np.zeros((n,))
 y = np.zeros((n,))
@@ -69,7 +70,7 @@ def forca_pressao(x, y, z, M, h, densidades):
     forcas_py = np.zeros(n)
     forcas_pz = np.zeros(n)
     distancias = distancia(x, y, z)
-    pressao = k * np.sqrt(densidades)
+    pressao = k * (densidades ** ((u+1)/u))
     for i in range(n):
         for j in range(n):
             if i != j:
@@ -144,7 +145,7 @@ def atualizar_rk4(x, y, z, vx, vy, vz, M, h, dt):
     return x, y, z, vx, vy, vz
 
 
-dt = 0.1 
+dt = 1
 num_frames = 100
 
 fig = plt.figure()
@@ -171,4 +172,5 @@ def update(frame):
 
 ani = FuncAnimation(fig, update, frames=num_frames, init_func=init, blit=True)
 
+plt.show()
 plt.show()
