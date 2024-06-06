@@ -1,10 +1,10 @@
 import numpy as np
 from matplotlib import pyplot as plt
-from matplotlib.animation import FuncAnimation
+from matplotlib.animation import FuncAnimation, PillowWriter
 from mpl_toolkits.mplot3d import Axes3D
 
-h = 1
-n = 16
+h = 5
+n = 30
 G = 6.67e-11
 k = 0.1
 u = 2
@@ -146,7 +146,7 @@ def atualizar_rk4(x, y, z, vx, vy, vz, M, h, dt):
 
 
 dt = 1
-num_frames = 100
+num_frames = 500
 
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
@@ -172,5 +172,6 @@ def update(frame):
 
 ani = FuncAnimation(fig, update, frames=num_frames, init_func=init, blit=True)
 
-plt.show()
+ani.save('animacao_circulo.gif', writer=PillowWriter(fps=30))
+
 plt.show()
