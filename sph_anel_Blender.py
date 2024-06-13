@@ -1,7 +1,5 @@
 import bpy
 import numpy as np
-from math import pi
-
 
 h = 5
 n = 50
