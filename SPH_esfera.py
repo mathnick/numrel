@@ -11,13 +11,11 @@ u = 2
 
 
 def dados_in(n, r):
-    i_ = np.arange(0, n, dtype=float)
+    phi = np.random.uniform(0, np.pi, n)
+    theta = np.random.uniform(0, 2 * np.pi, n)
+    u = np.random.uniform(0, 1, n)
 
-    r_ = np.cbrt(np.random.uniform(0, 1, n)) * r
-
-    phi = np.arccos(1 - 2 * i_ / n)
-    theta = np.pi * (1 + 5 ** 0.5) * i_
-
+    r_ = r * u ** (1 / 3)
     x_0 = r_ * np.sin(phi) * np.cos(theta)
     y_0 = r_ * np.sin(phi) * np.sin(theta)
     z_0 = r_ * np.cos(phi)
