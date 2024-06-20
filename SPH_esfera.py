@@ -4,10 +4,10 @@ from matplotlib.animation import FuncAnimation, PillowWriter
 from mpl_toolkits.mplot3d import Axes3D
 
 h = 5
-n = 100
+n = 300
 G = 6.67e-11
 k = 0.1
-u = 2
+u = 3
 
 
 def dados_in(n, r):
