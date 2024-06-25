@@ -139,8 +139,7 @@ def atualizar_rk4(x, y, z, vx, vy, vz, M, h, dt):
     vz += (dt / 6) * (k1_az + 2 * k2_az + 2 * k3_az + k4_az)
 
     return x, y, z, vx, vy, vz
-
-# Inicializar as partículas no Blender
+    
 def criar_esferas(n):
     esferas = []
     for i in range(n):
