@@ -3,12 +3,11 @@ from matplotlib import pyplot as plt
 from matplotlib.animation import FuncAnimation, PillowWriter
 from mpl_toolkits.mplot3d import Axes3D
 
-# Parâmetros
-h = 5  # Comprimento de suavização
-n = 100  # Número de partículas
-G = 6.67e-11  # Constante gravitacional
-k = 0.1  # Constante relacionada à pressão
-u = 2  # Expoente para a equação de estado
+h = 5  
+n = 100  
+G = 6.67e-11 
+k = 0.1  o
+u = 2  
 interval = 50
 
 
@@ -30,7 +29,6 @@ def dados_in(n, r):
     return x_0, y_0, z_0, vx_0, vy_0, vz_0, M
 
 
-# Inicialização das partículas
 x_0, y_0, z_0, vx_0, vy_0, vz_0, M = dados_in(n, r=1.0)
 
 x = np.zeros((n,))
@@ -44,7 +42,6 @@ y[...] = y_0
 z[...] = z_0
 
 
-# Função para calcular distâncias entre partículas
 def distancia(x, y, z):
     dx = x[:, np.newaxis] - x[np.newaxis, :]
     dy = y[:, np.newaxis] - y[np.newaxis, :]
@@ -52,7 +49,6 @@ def distancia(x, y, z):
     return dx, dy, dz
 
 
-# Kernel de Monaghan e Lattanzio
 def monaghan_lattanzio_kernel(r, h, dim=3):
     q = r / h
     sigma = {1: 2 / 3, 2: 10 / (7 * np.pi), 3: 1 / np.pi}[dim]  # Constante de normalização
@@ -67,7 +63,6 @@ def monaghan_lattanzio_kernel(r, h, dim=3):
     return W
 
 
-# Gradiente do kernel de Monaghan e Lattanzio
 def grad_monaghan_lattanzio_kernel(r, h, dim=3):
     q = r / h
     sigma = {1: 2 / 3, 2: 10 / (7 * np.pi), 3: 1 / np.pi}[dim]  # Constante de normalização
@@ -82,7 +77,6 @@ def grad_monaghan_lattanzio_kernel(r, h, dim=3):
     return grad_W
 
 
-# Função para calcular a densidade
 def densidade(x, y, z, M, h):
     n = len(x)
     densidades = np.zeros(n)
@@ -94,7 +88,6 @@ def densidade(x, y, z, M, h):
     return densidades
 
 
-# Função para calcular a força de pressão
 def forca_pressao(x, y, z, M, h, densidades):
     n = len(x)
     forcas_px = np.zeros(n)
@@ -117,7 +110,6 @@ def forca_pressao(x, y, z, M, h, densidades):
     return forcas_px, forcas_py, forcas_pz
 
 
-# Função para calcular a força gravitacional
 def forca_gravitacional(x, y, z, M):
     n = len(x)
     forcas_x = np.zeros(n)
@@ -137,7 +129,6 @@ def forca_gravitacional(x, y, z, M):
     return forcas_x, forcas_y, forcas_z
 
 
-# Função para calcular as derivadas
 def derivadas(x, y, z, vx, vy, vz, M, h):
     densidades = densidade(x, y, z, M, h)
     forcas_px, forcas_py, forcas_pz = forca_pressao(x, y, z, M, h, densidades)
@@ -150,7 +141,6 @@ def derivadas(x, y, z, vx, vy, vz, M, h):
     return vx, vy, vz, ax, ay, az
 
 
-# Função para atualizar as posições e velocidades usando Runge-Kutta de 4ª ordem
 def atualizar_rk4(x, y, z, vx, vy, vz, M, h, dt):
     k1_vx, k1_vy, k1_vz, k1_ax, k1_ay, k1_az = derivadas(x, y, z, vx, vy, vz, M, h)
     k1_rx, k1_ry, k1_rz = vx, vy, vz
@@ -180,11 +170,11 @@ def atualizar_rk4(x, y, z, vx, vy, vz, M, h, dt):
     return x, y, z, vx, vy, vz
 
 
-# Parâmetros da animação
+
 dt = 5
 num_frames = 300
 
-# Configuração da figura
+
 fig = plt.figure(figsize=(12, 6))
 ax1 = fig.add_subplot(121, projection='3d')
 ax1.set_xlim(-2, 2)
@@ -200,7 +190,6 @@ ax2.set_ylim(0.00115, 0.0013)
 densidade_plot, = ax2.plot([], [], 'r-')
 
 
-# Função de inicialização
 def init():
     particulas.set_data([], [])
     particulas.set_3d_properties([])
@@ -208,21 +197,18 @@ def init():
     return particulas, densidade_plot
 
 
-# Função de atualização
 def update(frame):
     global x, y, z, vx, vy, vz
     x, y, z, vx, vy, vz = atualizar_rk4(x, y, z, vx, vy, vz, M, h, dt)
     particulas.set_data(x, y)
     particulas.set_3d_properties(z)
 
-    # Calcular a densidade em função do raio
     raio = np.sqrt(x ** 2 + y ** 2 + z ** 2)
     densidades = densidade(x, y, z, M, h)
     sorted_indices = np.argsort(raio)
     raio_sorted = raio[sorted_indices]
     densidades_sorted = densidades[sorted_indices]
 
-    # Atualizar o gráfico da densidade
     densidade_plot.set_data(raio_sorted, densidades_sorted)
 
 
@@ -230,11 +216,8 @@ def update(frame):
     return particulas, densidade_plot
 
 
-# Criar a animação
 ani = FuncAnimation(fig, update, frames=num_frames, init_func=init, blit=True, interval = interval)
 
-# Salvar a animação (opcional)
 # ani.save('animacao_esfera_monaghan_lattanzio.gif', writer=PillowWriter(fps=30))
 
-# Mostrar a animação
 plt.show()
