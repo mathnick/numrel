@@ -3,12 +3,12 @@ from matplotlib import pyplot as plt
 from matplotlib.animation import FuncAnimation, PillowWriter
 from mpl_toolkits.mplot3d import Axes3D
 
-h = 5  
-n = 100  
-G = 6.67e-11 
-k = 0.1  o
-u = 2  
-interval = 50
+h = 5
+n = 500
+G = 6.67e-11
+k = 0.1
+u = 2
+interval = 150
 
 
 # Função para gerar dados iniciais
@@ -85,8 +85,10 @@ def densidade(x, y, z, M, h):
         r = np.sqrt(distancias[0][:, i] ** 2 + distancias[1][:, i] ** 2 + distancias[2][:, i] ** 2)
         W = monaghan_lattanzio_kernel(r, h)
         densidades[i] = np.sum(M * W)
+
     return densidades
 
+print(densidade(x,y,z,M,h))
 
 def forca_pressao(x, y, z, M, h, densidades):
     n = len(x)
@@ -171,7 +173,7 @@ def atualizar_rk4(x, y, z, vx, vy, vz, M, h, dt):
 
 
 
-dt = 5
+dt = 8
 num_frames = 300
 
 
@@ -186,9 +188,10 @@ ax2 = fig.add_subplot(122)
 ax2.set_xlabel('Raio')
 ax2.set_ylabel('Densidade')
 ax2.set_xlim(0, 1.1)
-ax2.set_ylim(0.00115, 0.0013)
+ax2.set_ylim(0.0055, 0.0065)
 densidade_plot, = ax2.plot([], [], 'r-')
 
+plt.tight_layout()
 
 def init():
     particulas.set_data([], [])
@@ -218,6 +221,6 @@ def update(frame):
 
 ani = FuncAnimation(fig, update, frames=num_frames, init_func=init, blit=True, interval = interval)
 
-# ani.save('animacao_esfera_monaghan_lattanzio.gif', writer=PillowWriter(fps=30))
+#ani.save('animacao_esfera_monaghan_lattanzio2.gif', writer=PillowWriter(fps=30))
 
 plt.show()
